@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>My Twitter profile</title>
+        <meta name="description" content="Wall social" />
+        <meta name="keywords" content="wall social" />
+        <meta name="author" content="Shahnaz" />
+        <link rel="stylesheet" type="text/css" href="http://shanez.ravirajendran.fr/public/css/normalize.css" />
+        <link rel="stylesheet" type="text/css" href="http://shanez.ravirajendran.fr/public/fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
+        <script src="http://shanez.ravirajendran.fr/public/js/modernizr.custom.js"></script>
+        <link rel="stylesheet" href="http://shanez.ravirajendran.fr/public/css/style.css">
+    </head>
+<body>
+
+<div class="container">
+    <button id="menu-toggle" class="menu-toggle"><span>Menu</span></button>
+    <div id="theSidebar" class="sidebar">
+        <button class="close-button fa fa-fw fa-close"></button>
+        <h1><span>Wall<span> Social</h1>
+        <nav class="ws-demos">
+            <a class="current-demo" href="#">Facebook</a>
+            <a class="current-demo" href="#">Twitter</a>
+        </nav>
+        <div class="related">
+            <a href="/myFacebook" class="btn btn-default btn-sm">Mon mur Facebook</a>
+            <a href="/myTwitter" class="btn btn-default btn-sm">Mes Tweets</a>
+            <a href="/myMentions" class="btn btn-default btn-sm">Mes Mentions Twitter</a>
+            <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        </div>
+    </div>
+    <div id="theGrid" class="main">
+        <section class="grid">
+            <header class="top-bar">
+                <h2 class="top-bar__headline">Fil d'actualité</h2>
+                <div class="filter">
+                    <span>Trier par : </span>
+                    <span class="dropdown">Facebook</span>
+                    <span class="dropdown">Twitter</span>
+                </div>
+            </header>
+            {% for tt in twdata %}
+            <div class="grid__item" href="#">
+                <h2 class="title">{{ tt.user.name }}</h2>
+                <div class="loader"></div>
+                <span>{{ tt.text }}</span>
+                <div class="meta meta--preview">
+                    <img class="meta__avatar" src="{{ tt.user.profile_image_url }}" alt="author04" />
+                    <span class="meta__date"><i class="fa fa-heart-o"></i>{{ tt.favorite_count }}  Favoris</span>
+                    <span class="meta__reading-time"><i class="fa fa-clock-o"></i>{{ tt.retweet_count }} Retweets</span>
+                </div>
+            </div>
+            {% endfor %}
+            {% for ft in fbdata %}
+                <div class="grid__item" href="#">
+                     {% if ft.story %}
+                        <h2 class="title">{{ ft.story }}</h2>
+                     {% endif %}
+                    <div class="loader"></div>
+                    <span>{{ ft.created_time }}</span>
+                    <div class="meta meta--preview">
+                        <img class="meta__avatar" src="https://graph.facebook.com/{{ ft.from.id }}/picture?type=small" alt="author04" /><!--{{ ft.from.name }}-->
+                        {% if ft.message %}
+                            <span>{{ ft.message }}</span>
+                        {% endif %}
+                        {% if ft.status_type=='shared_story' && ft.type=='link' %}
+                        <a href="{{ ft.link }}">
+                            <div>
+                            {% if ft.picture && ft.type!='video' %}<img src="{{ ft.picture }}">{% endif %}
+                                <div>
+                                    <p>{{ ft.name }}</p>
+                                    <p>{{ ft.description }}</p>
+                                </div>
+                            </div>
+                        </a>
+                        {% else %}
+                            {% if ft.picture && ft.type!='video' %}
+                                <div class="post-img">
+                                    <img src="{{ ft.picture }}">
+                                </div>
+                            {% endif %}
+                            {% if ft.type=='video' %}
+                                <video controls>
+                                    <source src="{{ ft.source }}">
+                                </video>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+        <!--Opening the tweet, next version-->
+        <section class="content">
+            <div class="scroll-wrap">
+                <article class="content__item">
+                   Pas encore de contenu
+                </article>
+            </div>
+            <button class="close-button"><i class="fa fa-close"></i><span>Close</span></button>
+        </section>
+        <!--end of Opening the tweet-->
+    </div>
+</div>
+    <script src="http://shanez.ravirajendran.fr/public/js/classie.js"></script>
+    <script src="http://shanez.ravirajendran.fr/public/js/main.js"></script></body>
+</body>
+</html>
